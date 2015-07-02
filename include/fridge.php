@@ -1,11 +1,11 @@
 <?php
-/*
+/**
  * This class will take care of all operation neede to perform in Fridge, main functions includes:
  * 	- Validate CSV file
  *  - Read data from CSV
  *  - Convert Data from CSV to Array
  * 	- Process only fresh items
- * 	- Provide date of any item in timestamp format
+ * 	- Provide use by date of any item in timestamp format
  */
 
 class fridge{
