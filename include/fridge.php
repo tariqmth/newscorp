@@ -1,8 +1,11 @@
 <?php
-/**
- * Read CSV file and validate colunms.
- * @param	string csv file path needed to read file from
- * @return	boolean true if validated false if not
+/*
+ * This class will take care of all operation neede to perform in Fridge, main functions includes:
+ * 	- Validate CSV file
+ *  - Read data from CSV
+ *  - Convert Data from CSV to Array
+ * 	- Process only fresh items
+ * 	- Provide date of any item in timestamp format
  */
 
 class fridge{
@@ -11,6 +14,11 @@ class fridge{
 		if (self::validate_csv($csv_file_path)!==false)
 			self::$csv_file_path=$csv_file_path;
 	}
+	/**
+	 * Read CSV file and validate colunms.
+	 * @param	string csv file path needed to read file from
+	 * @return	boolean true if validated false if not
+	 */
 	public static function validate_csv($csv_file_path){
 		try {
 			$iterator = new C1CSVIterator($csv_file_path, false);
@@ -29,6 +37,11 @@ class fridge{
 			return false;
 		}
 	}
+	/**
+	 * Read CSV file and returns array.
+	 * @return	array $csv_date collection of csv collnms data
+	 */
+	
 	private function csv_to_array(){
 		$iterator = new C1CSVIterator(self::$csv_file_path, false);
 		$csv_data=array();
@@ -39,6 +52,12 @@ class fridge{
 		}
 		return $csv_data;
 	}
+	
+	/**
+	 * Read CSV file and validate use by date for each item.
+	 * @return	array  $fresh_items array of items where use by date is not passed.
+	 */	
+	
 	public function get_fresh_items(){
 		$items = self::csv_to_array();
 		$fresh_item = array();
@@ -56,6 +75,13 @@ class fridge{
 		return $fresh_item;
 	}
 	
+	/**
+	 * Iterate through each fresh items and validate parameter data .
+	 * @param	string $item item name
+	 * @param 	int	$qty quantity required
+	 * @param	string $unit unit required
+	 * @return	boolean true if validated false if not
+	 */
 	public function check_in_fridge($item,$qty,$unit){
 		$fresh_items = $this->get_fresh_items();
 		
@@ -71,6 +97,12 @@ class fridge{
 		return false;
 		
 	}
+
+	/**
+	 * Iterate through items and return use by date of matching item only
+	 * @param	string $item_name name of item which use by date required
+	 * @return	timestamp $use_by_date if item match otherwise return false
+	 */
 	public function get_use_by_date($item_name){
 		$items = self::csv_to_array();
 		foreach ($items as $item){

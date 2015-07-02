@@ -1,10 +1,23 @@
 <?php
+/**
+ * Recipe class aims to handle all operation needed to get a recommendation for tonight recipe, main functions includes:
+ * 	- Read JSON
+ * 	- Convert JSON to array
+ * 	- Render list of recipes available in JSON
+ * 	- Render list of ingredients of specific recipe
+ *  - Check recipe in frisge and render recipe of the most nearest use by ingrident
+ */
 class recipe{
 	private static $json_file_path;
 	public function __construct($json_file_path) {
 			self::$json_file_path=$json_file_path;
 	}
 	
+	/**
+	 * Read JSON file and stor ir in string variable
+	 * @param 	string $json_file_path location of json file
+	 * @return 	false if json not decoded or error occured, otherwise return array $recipes
+	 */
 	public function json_to_array(){
 		try {
 			$json = file_get_contents(self::$json_file_path);
@@ -15,6 +28,11 @@ class recipe{
 			return false;
 		}
 	}
+
+	/**
+	 * Iterate through items and return use by date of matching item only
+	 * @return	array $recipes names of available recipes
+	 */
 	public function get_recipes(){
 		$recipes = array();
 		$ar = $this->json_to_array() ;
@@ -23,6 +41,12 @@ class recipe{
 		}
 		return $recipes;
 	}
+
+	/**
+	 * Iterate through items and return ingridents of specific item
+	 * @param	string $ing name of recipe
+	 * @return	array $ingredients list of ingridents for matching item
+	 */	
 	public function get_ingredients($ing){
 		$ingredients = array();
 		foreach (self::json_to_array() as $recipe=>$value){
@@ -34,8 +58,13 @@ class recipe{
 		}
 		return $ingredients;
 	}
-	
-	// get recipe
+
+	/**
+	 * This is the main function that takes 2 files as input and process all fridge and recipe
+	 * @param	string $csv_file path of csv data file
+	 * @param	string $json_file path of json data file
+	 * @return	string $cook result of get_recipe what to cook tonight if successful, on any error return false
+	 */
 	public static function get_recpie($csv_file, $json_file){
 		try {
 	
