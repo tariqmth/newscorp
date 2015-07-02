@@ -1,9 +1,10 @@
 <?php
 // include classes
-require_once str_replace('cli','include',dirname(__FILE__)).'/C1Iterator.php';
-require_once str_replace('cli','include',dirname(__FILE__)).'/fridge.php';
-require_once str_replace('cli','include',dirname(__FILE__)).'/recipe.php';
-	
+require_once str_replace('tests','include',dirname(__FILE__)).'/C1Iterator.php';
+require_once str_replace('tests','include',dirname(__FILE__)).'/fridge.php';
+require_once str_replace('tests','include',dirname(__FILE__)).'/recipe.php';
+
+
 class datecalcTest extends PHPUnit_Framework_TestCase{
 	public $test;
 	public function setup(){
